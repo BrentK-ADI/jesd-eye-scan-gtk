@@ -6,7 +6,7 @@ src = $(wildcard *.c)
 obj = $(src:.c=.o)
 
 
-all: jesd_status jesd_eye_scan
+all: jesd_status jesd_eye_scan jesd_status_simple
 
 jesd_status: jesd_status.o jesd_common.o
 	$(CC) -o $@ $^ -lncurses
@@ -14,10 +14,14 @@ jesd_status: jesd_status.o jesd_common.o
 jesd_eye_scan: jesd_eye_scan.o jesd_common.o
 	$(CC) -o $@ $^ $(CFLAGS) $(LIBS) -lm
 
+jesd_status_simple: jesd_status_simple.o jesd_common.o
+	$(CC) -o $@ $^
+
 install:
 	install -d $(DESTDIR)/bin
 	install -d $(DESTDIR)/share/jesd/
 	install ./jesd_status $(DESTDIR)/bin/
+	install ./jesd_status_simple $(DESTDIR)/bin/
 	install ./jesd_eye_scan $(DESTDIR)/bin/
 	install ./jesd_eye_scan_autostart.sh $(DESTDIR)/bin/
 	install ./jesd.glade $(DESTDIR)/share/jesd/
@@ -26,5 +30,5 @@ install:
 	install jesd_eye_scan.desktop $(HOME)/.config/autostart/jesd_eye_scan.desktop
 
 clean:
-	rm -f $(obj) jesd_status jesd_eye_scan
+	rm -f $(obj) jesd_status jesd_eye_scan jesd_status_simple
 	rm -rf *.png *.eye
